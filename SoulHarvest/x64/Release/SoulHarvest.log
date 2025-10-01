@@ -6,8 +6,10 @@ G:\dev\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non d
       G:\dev\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
       see declaration of 'sf::Exception'
   
+G:\dev\repos\SoulHarvest\SoulHarvest\SoulHarvest.cpp(205,28): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+G:\dev\repos\SoulHarvest\SoulHarvest\SoulHarvest.cpp(260,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating code
-  1 of 203 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  2 of 320 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
