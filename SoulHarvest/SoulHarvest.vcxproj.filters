@@ -18,5 +18,13 @@
     <ClCompile Include="SoulHarvest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="upgrades.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="upgrades.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

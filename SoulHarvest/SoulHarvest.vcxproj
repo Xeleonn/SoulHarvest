@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SoulHarvest.cpp" />
+    <ClCompile Include="upgrades.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="upgrades.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,6 @@
+#include "upgrades.h"
+#include "player.h"
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -5,34 +8,6 @@
 #include <cmath>
 
 std::string updateTimeLabel(sf::Text label, int hours, int minutes, float seconds);
-
-class Upgrade
-{
-public:
-    Upgrade();
-    ~Upgrade();
-
-    int amountOwned;
-    int cost;
-    int soulsPerSec;
-
-    Upgrade(int baseCost, int baseSoulsPerSec)
-    {
-        cost = baseCost;
-        soulsPerSec = baseSoulsPerSec;
-    }
-
-private:
-
-};
-
-Upgrade::Upgrade()
-{
-}
-
-Upgrade::~Upgrade()
-{
-}
 
 int main()
 {
@@ -47,8 +22,12 @@ int main()
     // Sets the font for all of the text
     const sf::Font font("fonts/KONSTANTINE.ttf");
 
-    // Souls variables
-    int souls = 0;                          // Amount of souls player has
+    // Player data
+    PlayerData player;                      // Load player data
+    player.name = "Player";                 // Give player default name
+    player.soulsOwned = 0;                  // Ensure player's souls start at 0
+    player.currentLevel = 0;
+    player.totalSoulsEarned = 0;
     float clickMultiplier = 1.0f;           // The multiplier for souls earned by clicking
     float costIncreasePercentage = 0.15f;   // The percentage that the cost of an upgrade goes up by each time it's purchased
 
