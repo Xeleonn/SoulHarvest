@@ -1,2 +1,4 @@
-G:\dev\repos\SoulHarvest\SoulHarvest\SoulHarvest.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\SoulHarvest.obj
-G:\dev\repos\SoulHarvest\SoulHarvest\upgrades.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\upgrades.obj
+G:\dev\repos\SoulHarvest\SoulHarvest\Clock.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\Clock.obj
+G:\dev\repos\SoulHarvest\SoulHarvest\Player.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\Player.obj
+G:\dev\repos\SoulHarvest\SoulHarvest\Main.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\Main.obj
+G:\dev\repos\SoulHarvest\SoulHarvest\Upgrades.cpp;G:\dev\repos\SoulHarvest\SoulHarvest\x64\Release\Upgrades.obj

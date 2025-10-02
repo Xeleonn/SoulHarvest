@@ -1,15 +1,15 @@
-﻿  SoulHarvest.cpp
+﻿  Main.cpp
 G:\dev\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'SoulHarvest.cpp')
+  (compiling source file 'Main.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
       see declaration of 'std::runtime_error'
       G:\dev\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
       see declaration of 'sf::Exception'
   
-G:\dev\repos\SoulHarvest\SoulHarvest\SoulHarvest.cpp(179,28): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-G:\dev\repos\SoulHarvest\SoulHarvest\SoulHarvest.cpp(234,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+G:\dev\repos\SoulHarvest\SoulHarvest\Main.cpp(197,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+G:\dev\repos\SoulHarvest\SoulHarvest\Main.cpp(252,46): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating code
-  0 of 320 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 325 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

@@ -10,8 +10,6 @@ public:
     int cost;
     int soulsPerSec;
 
-    Upgrade(int baseCost, int baseSoulsPerSec);
-
 private:
 
 };

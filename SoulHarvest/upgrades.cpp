@@ -10,12 +10,6 @@ public:
     int cost;
     int soulsPerSec;
 
-    Upgrade(int baseCost, int baseSoulsPerSec)
-    {
-        cost = baseCost;
-        soulsPerSec = baseSoulsPerSec;
-    }
-
 private:
 
 };

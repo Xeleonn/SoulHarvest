@@ -139,11 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SoulHarvest.cpp" />
-    <ClCompile Include="upgrades.cpp" />
+    <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Upgrades.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="upgrades.h" />
+    <ClInclude Include="Clock.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Upgrades.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
