@@ -26,10 +26,10 @@ int main()
     // Player data
     Player player;                          // Load player data
     player.data.name = "Player";            // Give player default name
-    player.data.soulsOwned = 0;             // Ensure player's souls start at 0
+    player.data.soulsOwned = 0.0f;          // Ensure player's souls start at 0
     player.data.currentLevel = 0;
-    player.data.totalSoulsEarned = 0;
-    player.data.totalSoulsSpent = 0;
+    player.data.totalSoulsEarned = 0.0f;
+    player.data.totalSoulsSpent = 0.0f;
     player.data.totalUpgradesOwned = 0;
 
     // Game variables
@@ -39,7 +39,7 @@ int main()
     Upgrade scythes;
     scythes.amountOwned = 0;
     scythes.cost = 15;
-    scythes.soulsPerSec = 1;
+    scythes.soulsPerSec = 0.10f;
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Soul Harvest");
@@ -53,7 +53,7 @@ int main()
     title.setPosition({ WINDOW_WIDTH / 2, 50 });
 
     // Create player name text
-    sf::Text playerNameLabel(font, player.data.name, 24);
+    sf::Text playerNameLabel(font, player.data.name + "'s Soul Farm", 24);
     sf::FloatRect playerNameLb = playerNameLabel.getLocalBounds();
     playerNameLabel.setOrigin({ playerNameLb.size.x, 0 });
     playerNameLabel.setPosition({ WINDOW_WIDTH - 15, 15 });
@@ -63,7 +63,7 @@ int main()
     timeLabel.setPosition({ 15, 15 });
 
     // Create souls text
-    sf::Text soulsLabel(font, "Souls: " + std::to_string(player.data.soulsOwned), 24);
+    sf::Text soulsLabel(font, "Souls: " + std::to_string(round(player.data.soulsOwned)), 24);
     soulsLabel.setPosition({ 15, 45 });
 
     // Create scythes text
@@ -104,13 +104,6 @@ int main()
             // Close window: exit
             if (event->is<sf::Event::Closed>())
                 window.close();
-
-            // Resize window
-            if (const auto* resized = event->getIf<sf::Event::Resized>())
-            {
-                std::cout << "new width: " << resized->size.x << std::endl;
-                std::cout << "new height: " << resized->size.y << std::endl;
-            }
         }
 
         // Get the elapsed time since the last frame
@@ -193,7 +186,7 @@ int main()
             // On mouse release
             if (onMouseRelease and soulButton_isPressedInside)
             {
-                player.incrementSouls(1);
+                player.addSouls(1);
                 std::cout << "Release\n";
             }
 
@@ -279,8 +272,8 @@ int main()
             soulButton_isPressedInside = false;
         }
 
-        // Update souls label every frame.
-        soulsLabel.setString("Souls: " + std::to_string(player.data.soulsOwned));
+        // Update souls label every frame
+        soulsLabel.setString("Souls: " + std::to_string(static_cast<int>(player.data.soulsOwned)));
 
         // Clear screen
         window.clear(sf::Color(20, 20, 20));

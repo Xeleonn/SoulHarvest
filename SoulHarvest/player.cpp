@@ -10,7 +10,17 @@ Player::~Player()
 {
 }
 
-void Player::incrementSouls(int amt)
+void Player::addSouls(float amt)
 {
 	data.soulsOwned += amt;
+}
+
+void Player::subtractSouls(float amt)
+{
+	data.soulsOwned -= amt;
+}
+
+void Player::multiplySouls(float mult)
+{
+	data.soulsOwned *= mult;
 }

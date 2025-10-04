@@ -8,7 +8,7 @@ public:
 
     int amountOwned;
     int cost;
-    int soulsPerSec;
+    float soulsPerSec;
 
 private:
 

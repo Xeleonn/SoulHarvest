@@ -9,13 +9,15 @@ public:
 
 	struct PlayerData {
 		std::string name;
-		int soulsOwned;
+		float soulsOwned;
 		int currentLevel;
-		int totalUpgradesOwned;
-		int totalSoulsSpent;
-		int totalSoulsEarned;
+		float totalUpgradesOwned;
+		float totalSoulsSpent;
+		float totalSoulsEarned;
 	};
 	PlayerData data;
 
-	void incrementSouls(int amt);
+	void addSouls(float amt);
+	void subtractSouls(float amt);
+	void multiplySouls(float mult);
 };
