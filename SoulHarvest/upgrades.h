@@ -10,6 +10,9 @@ public:
     int cost;
     float soulsPerSec;
 
+    void addAmountOwned(float amt);
+    void subtractAmountOwned(float amt);
+
 private:
 
 };

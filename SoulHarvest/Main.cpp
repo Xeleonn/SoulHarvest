@@ -47,10 +47,10 @@ int main()
     window.setFramerateLimit(120);
 
     // Create title text
-    sf::Text title(font, "SOUL HARVEST", 42);
+    sf::Text title(font, "SOUL HARVEST", 36);
     sf::FloatRect titleLb = title.getLocalBounds();
     title.setOrigin(titleLb.getCenter());
-    title.setPosition({ WINDOW_WIDTH / 2, 50 });
+    title.setPosition({ WINDOW_WIDTH / 2, 40 });
 
     // Create player name text
     sf::Text playerNameLabel(font, player.data.name + "'s Soul Farm", 24);
@@ -59,7 +59,7 @@ int main()
     playerNameLabel.setPosition({ WINDOW_WIDTH - 15, 15 });
 
     // Create time text
-    sf::Text timeLabel(font, "Time Played: 00:00:00", 24);
+    sf::Text timeLabel(font, "Time Played:", 24);
     timeLabel.setPosition({ 15, 15 });
 
     // Create souls text
@@ -68,27 +68,27 @@ int main()
 
     // Create scythes text
     sf::Text scythesLabel(font, "Scythes: " + std::to_string(scythes.amountOwned) + "   Cost: " + std::to_string(scythes.cost), 24);
-    scythesLabel.setPosition({ 15, 75 });
+    scythesLabel.setPosition({ 75, 75 });
 
-    // Create soul_button
+    // Create soulButton
     sf::CircleShape soulButton(100.f);
     soulButton.setFillColor(sf::Color::Cyan);
     sf::FloatRect soulButtonLb = soulButton.getLocalBounds();
     soulButton.setOrigin(soulButtonLb.getCenter());
     soulButton.setPosition({ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 });
 
-    // State of soul_button
+    // State of soulButton
     bool soulButton_isOver = false;
     bool soulButton_isPressedInside = false;
 
-    // Create scythes_button
-    sf::RectangleShape scythesButton({ 100.0f, 50.0f });
+    // Create scythesButton
+    sf::RectangleShape scythesButton({ 50.0f, 20.0f });
     scythesButton.setFillColor(sf::Color::Cyan);
     sf::FloatRect scythesButtonLb = scythesButton.getLocalBounds();
-    scythesButton.setOrigin(scythesButtonLb.getCenter());
-    scythesButton.setPosition({ WINDOW_WIDTH / 2, 250 });
+    //scythesButton.setOrigin(scythesButtonLb.getCenter());
+    scythesButton.setPosition({ 15, 80 });
 
-    // State of soul_button
+    // State of soulButton
     bool scythesButton_isOver = false;
     bool scythesButton_isPressedInside = false;
 
@@ -155,7 +155,7 @@ int main()
             isMousePressed = false;
         }
 
-        // When mouse is over soul_button
+        // When mouse is over soulButton
         if (soulButton.getGlobalBounds().contains(mousePos))
         {
             // When mouse is pressed
@@ -207,7 +207,7 @@ int main()
             soulButton_isOver = false;
         }
 
-        // When mouse is over scythes_button
+        // When mouse is over scythesButton
         if (scythesButton.getGlobalBounds().contains(mousePos))
         {
             // When mouse is pressed
@@ -240,9 +240,9 @@ int main()
             {
                 if (player.data.soulsOwned >= scythes.cost)
                 {
-                    player.data.soulsOwned -= scythes.cost;
+                    player.subtractSouls(scythes.cost);
                     scythes.cost = std::round(scythes.cost * (1 + costIncreasePercentage));
-                    scythes.amountOwned += 1;
+                    scythes.addAmountOwned(1);
                     player.data.totalUpgradesOwned += 1;
                     scythesLabel.setString("Scythes: " + std::to_string(scythes.amountOwned) + "   Cost: " + std::to_string(scythes.cost));
                 }
