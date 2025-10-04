@@ -24,16 +24,15 @@ int main()
     const sf::Font font("fonts/KONSTANTINE.ttf");
 
     // Player data
-    PlayerData player;                      // Load player data
-    player.name = "Player";                 // Give player default name
-    player.soulsOwned = 0;                  // Ensure player's souls start at 0
-    player.currentLevel = 0;
-    player.totalSoulsEarned = 0;
-    player.totalSoulsSpent = 0;
-    player.totalUpgradesOwned = 0;
+    Player player;                          // Load player data
+    player.data.name = "Player";            // Give player default name
+    player.data.soulsOwned = 0;             // Ensure player's souls start at 0
+    player.data.currentLevel = 0;
+    player.data.totalSoulsEarned = 0;
+    player.data.totalSoulsSpent = 0;
+    player.data.totalUpgradesOwned = 0;
 
     // Game variables
-    float clickMultiplier = 1.0f;           // The multiplier for souls earned by clicking
     float costIncreasePercentage = 0.15f;   // The percentage that the cost of an upgrade goes up by each time it's purchased
 
     // Create the scythe upgrade
@@ -54,7 +53,7 @@ int main()
     title.setPosition({ WINDOW_WIDTH / 2, 50 });
 
     // Create player name text
-    sf::Text playerNameLabel(font, player.name, 24);
+    sf::Text playerNameLabel(font, player.data.name, 24);
     sf::FloatRect playerNameLb = playerNameLabel.getLocalBounds();
     playerNameLabel.setOrigin({ playerNameLb.size.x, 0 });
     playerNameLabel.setPosition({ WINDOW_WIDTH - 15, 15 });
@@ -64,7 +63,7 @@ int main()
     timeLabel.setPosition({ 15, 15 });
 
     // Create souls text
-    sf::Text soulsLabel(font, "Souls: " + std::to_string(player.soulsOwned), 24);
+    sf::Text soulsLabel(font, "Souls: " + std::to_string(player.data.soulsOwned), 24);
     soulsLabel.setPosition({ 15, 45 });
 
     // Create scythes text
@@ -121,8 +120,8 @@ int main()
         if (tick_elapsed.asSeconds() >= 1.0f) {
             // Increment the counter
             for (int i = 0; i < scythes.amountOwned; ++i)
-                player.soulsOwned += scythes.soulsPerSec;
-                player.totalSoulsEarned += scythes.soulsPerSec;
+                player.data.soulsOwned += scythes.soulsPerSec;
+                player.data.totalSoulsEarned += scythes.soulsPerSec;
 
             // Restart the clock to time the next second
             tick.restart();
@@ -194,7 +193,7 @@ int main()
             // On mouse release
             if (onMouseRelease and soulButton_isPressedInside)
             {
-                player.soulsOwned += 1 * clickMultiplier;
+                player.incrementSouls(1);
                 std::cout << "Release\n";
             }
 
@@ -246,12 +245,12 @@ int main()
             // On mouse release
             if (onMouseRelease and scythesButton_isPressedInside)
             {
-                if (player.soulsOwned >= scythes.cost)
+                if (player.data.soulsOwned >= scythes.cost)
                 {
-                    player.soulsOwned -= scythes.cost;
+                    player.data.soulsOwned -= scythes.cost;
                     scythes.cost = std::round(scythes.cost * (1 + costIncreasePercentage));
                     scythes.amountOwned += 1;
-                    player.totalUpgradesOwned += 1;
+                    player.data.totalUpgradesOwned += 1;
                     scythesLabel.setString("Scythes: " + std::to_string(scythes.amountOwned) + "   Cost: " + std::to_string(scythes.cost));
                 }
                 std::cout << "Release\n";
@@ -281,7 +280,7 @@ int main()
         }
 
         // Update souls label every frame.
-        soulsLabel.setString("Souls: " + std::to_string(player.soulsOwned));
+        soulsLabel.setString("Souls: " + std::to_string(player.data.soulsOwned));
 
         // Clear screen
         window.clear(sf::Color(20, 20, 20));

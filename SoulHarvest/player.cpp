@@ -1,11 +1,16 @@
+#include "Player.h"
 #include <iostream>
 #include <string>
 
-struct PlayerData {
-	std::string name;
-	int souls;
-	int level;
-	int totalUpgradesOwned;
-	int totalSoulsSpent;
-	int totalSoulsEarned;
-};
+Player::Player()
+{
+}
+
+Player::~Player()
+{
+}
+
+void Player::incrementSouls(int amt)
+{
+	data.soulsOwned += amt;
+}
