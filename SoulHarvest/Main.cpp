@@ -8,8 +8,6 @@
 #include <format>
 #include <cmath>
 
-std::string updateTimeLabel(sf::Text label, int hours, int minutes, float seconds);
-
 int main()
 {
     // Initializes the clock used for keeping time played
@@ -23,6 +21,9 @@ int main()
     // Sets the font for all of the text
     const sf::Font font("fonts/KONSTANTINE.ttf");
 
+    // State of mouse
+    bool isMousePressed = false;
+
     // Player data
     Player player;                          // Load player data
     player.data.name = "Player";            // Give player default name
@@ -34,12 +35,6 @@ int main()
 
     // Game variables
     float costIncreasePercentage = 0.15f;   // The percentage that the cost of an upgrade goes up by each time it's purchased
-
-    // Create the scythe upgrade
-    Upgrade scythes;
-    scythes.amountOwned = 0;
-    scythes.cost = 15;
-    scythes.soulsPerSec = 0.10f;
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Soul Harvest");
@@ -62,13 +57,7 @@ int main()
     sf::Text timeLabel(font, "Time Played:", 24);
     timeLabel.setPosition({ 15, 15 });
 
-    // Create souls text
-    sf::Text soulsLabel(font, "Souls: " + std::to_string(round(player.data.soulsOwned)), 24);
-    soulsLabel.setPosition({ 15, 45 });
 
-    // Create scythes text
-    sf::Text scythesLabel(font, "Scythes: " + std::to_string(scythes.amountOwned) + "   Cost: " + std::to_string(scythes.cost), 24);
-    scythesLabel.setPosition({ 75, 75 });
 
     // Create soulButton
     sf::CircleShape soulButton(100.f);
@@ -81,19 +70,55 @@ int main()
     bool soulButton_isOver = false;
     bool soulButton_isPressedInside = false;
 
-    // Create scythesButton
-    sf::RectangleShape scythesButton({ 50.0f, 20.0f });
-    scythesButton.setFillColor(sf::Color::Cyan);
-    sf::FloatRect scythesButtonLb = scythesButton.getLocalBounds();
-    //scythesButton.setOrigin(scythesButtonLb.getCenter());
-    scythesButton.setPosition({ 15, 80 });
+    // Create souls text
+    sf::Text soulsLabel(font, "Souls: " + std::to_string(round(player.data.soulsOwned)), 24);
+    soulsLabel.setPosition({ 15, 45 });
 
-    // State of soulButton
-    bool scythesButton_isOver = false;
-    bool scythesButton_isPressedInside = false;
 
-    // State of mouse
-    bool isMousePressed = false;
+
+    // Create the Scythe upgrade
+    Upgrade scythe;
+    scythe.amountOwned = 0;
+    scythe.cost = 15;
+    scythe.soulsPerSec = 0.10f;
+
+    // Create scytheButton
+    sf::RectangleShape scytheButton({ 50.0f, 20.0f });
+    scytheButton.setFillColor(sf::Color::Cyan);
+    sf::FloatRect scytheButtonLb = scytheButton.getLocalBounds();
+    scytheButton.setPosition({ 15, 80 });
+
+    // Create scythe text
+    sf::Text scytheLabel(font, "Scythes: " + std::to_string(scythe.amountOwned) + "     Cost: " + std::to_string(scythe.cost), 24);
+    scytheLabel.setPosition({ 75, 75 });
+
+    // State of scytheButton
+    bool scytheButton_isOver = false;
+    bool scytheButton_isPressedInside = false;
+
+
+
+    // Create the Gravedigger upgrade
+    Upgrade gravedigger;
+    gravedigger.amountOwned = 0;
+    gravedigger.cost = 100;
+    gravedigger.soulsPerSec = 1.0f;
+
+    // Create gravediggerButton
+    sf::RectangleShape gravediggerButton({ 50.0f, 20.0f });
+    gravediggerButton.setFillColor(sf::Color::Cyan);
+    sf::FloatRect gravediggerButtonLb = gravediggerButton.getLocalBounds();
+    gravediggerButton.setPosition({ 15, 110 });
+
+    // Create Gravedigger text
+    sf::Text gravediggerLabel(font, "Gravediggers: " + std::to_string(gravedigger.amountOwned) + "     Cost: " + std::to_string(gravedigger.cost), 24);
+    gravediggerLabel.setPosition({ 75, 105 });
+
+    // State of gravediggerButton
+    bool gravediggerButton_isOver = false;
+    bool gravediggerButton_isPressedInside = false;
+
+
 
     // Start the game loop
     while (window.isOpen())
@@ -111,10 +136,23 @@ int main()
 
         // Check if a full second has passed
         if (tick_elapsed.asSeconds() >= 1.0f) {
-            // Increment the counter
-            for (int i = 0; i < scythes.amountOwned; ++i)
-                player.data.soulsOwned += scythes.soulsPerSec;
-                player.data.totalSoulsEarned += scythes.soulsPerSec;
+            if (scythe.amountOwned > 0)
+            {
+                for (int i = 0; i < scythe.amountOwned; ++i)
+                {
+                    player.data.soulsOwned += scythe.soulsPerSec;
+                    player.data.totalSoulsEarned += scythe.soulsPerSec;
+                }
+            }
+
+            if (gravedigger.amountOwned > 0)
+            {
+                for (int i = 0; i < gravedigger.amountOwned; ++i)
+                {
+                    player.data.soulsOwned += gravedigger.soulsPerSec;
+                    player.data.totalSoulsEarned += gravedigger.soulsPerSec;
+                }
+            }
 
             // Restart the clock to time the next second
             tick.restart();
@@ -136,6 +174,8 @@ int main()
         // Update the text with the new time string
         timeLabel.setString(updateTimeLabel(timeLabel, hours, minutes, seconds));
 
+
+
         // Mouse position
         auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 
@@ -154,6 +194,8 @@ int main()
                 onMouseRelease = true;
             isMousePressed = false;
         }
+
+
 
         // When mouse is over soulButton
         if (soulButton.getGlobalBounds().contains(mousePos))
@@ -207,21 +249,23 @@ int main()
             soulButton_isOver = false;
         }
 
-        // When mouse is over scythesButton
-        if (scythesButton.getGlobalBounds().contains(mousePos))
+
+
+        // When mouse is over scytheButton
+        if (scytheButton.getGlobalBounds().contains(mousePos))
         {
             // When mouse is pressed
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) and scythesButton_isPressedInside)
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) and scytheButton_isPressedInside)
             {
-                scythesButton.setFillColor(sf::Color::Cyan);
+                scytheButton.setFillColor(sf::Color::Cyan);
             }
             else
             {
-                scythesButton.setFillColor(sf::Color(0, 170, 255));
+                scytheButton.setFillColor(sf::Color(0, 170, 255));
             }
 
             // On mouse enter
-            if (not scythesButton_isOver)
+            if (not scytheButton_isOver)
             {
                 std::cout << "Enter\n";
             }
@@ -232,44 +276,109 @@ int main()
                 std::cout << "Press\n";
 
                 // Set pressed inside
-                scythesButton_isPressedInside = true;
+                scytheButton_isPressedInside = true;
             }
 
             // On mouse release
-            if (onMouseRelease and scythesButton_isPressedInside)
+            if (onMouseRelease and scytheButton_isPressedInside)
             {
-                if (player.data.soulsOwned >= scythes.cost)
+                if (player.data.soulsOwned >= scythe.cost)
                 {
-                    player.subtractSouls(scythes.cost);
-                    scythes.cost = std::round(scythes.cost * (1 + costIncreasePercentage));
-                    scythes.addAmountOwned(1);
+                    player.subtractSouls(scythe.cost);
+                    scythe.cost = std::round(scythe.cost * (1 + costIncreasePercentage));
+                    scythe.addAmountOwned(1);
                     player.data.totalUpgradesOwned += 1;
-                    scythesLabel.setString("Scythes: " + std::to_string(scythes.amountOwned) + "   Cost: " + std::to_string(scythes.cost));
+                    scytheLabel.setString("Scythe: " + std::to_string(scythe.amountOwned) + "     Cost: " + std::to_string(scythe.cost));
                 }
                 std::cout << "Release\n";
             }
 
             // Set state
-            scythesButton_isOver = true;
+            scytheButton_isOver = true;
         }
         else
         {
-            scythesButton.setFillColor(sf::Color::White);
+            scytheButton.setFillColor(sf::Color::White);
 
             // On mouse leave
-            if (scythesButton_isOver)
+            if (scytheButton_isOver)
             {
                 std::cout << "Leave\n";
             }
 
             // Reset state
-            scythesButton_isOver = false;
+            scytheButton_isOver = false;
         }
+
+
+
+        // When mouse is over gravediggerButton
+        if (gravediggerButton.getGlobalBounds().contains(mousePos))
+        {
+            // When mouse is pressed
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) and gravediggerButton_isPressedInside)
+            {
+                gravediggerButton.setFillColor(sf::Color::Cyan);
+            }
+            else
+            {
+                gravediggerButton.setFillColor(sf::Color(0, 170, 255));
+            }
+
+            // On mouse enter
+            if (not gravediggerButton_isOver)
+            {
+                std::cout << "Enter\n";
+            }
+
+            // On mouse press
+            if (onMousePress)
+            {
+                std::cout << "Press\n";
+
+                // Set pressed inside
+                gravediggerButton_isPressedInside = true;
+            }
+
+            // On mouse release
+            if (onMouseRelease and gravediggerButton_isPressedInside)
+            {
+                if (player.data.soulsOwned >= gravedigger.cost)
+                {
+                    player.subtractSouls(gravedigger.cost);
+                    gravedigger.cost = std::round(gravedigger.cost * (1 + costIncreasePercentage));
+                    gravedigger.addAmountOwned(1);
+                    player.data.totalUpgradesOwned += 1;
+                    gravediggerLabel.setString("Gravediggers: " + std::to_string(gravedigger.amountOwned) + "     Cost: " + std::to_string(gravedigger.cost));
+                }
+                std::cout << "Release\n";
+            }
+
+            // Set state
+            gravediggerButton_isOver = true;
+        }
+        else
+        {
+            gravediggerButton.setFillColor(sf::Color::White);
+
+            // On mouse leave
+            if (gravediggerButton_isOver)
+            {
+                std::cout << "Leave\n";
+            }
+
+            // Reset state
+            gravediggerButton_isOver = false;
+        }
+
+
 
         // Reset pressed inside
         if (not isMousePressed)
         {
             soulButton_isPressedInside = false;
+            scytheButton_isPressedInside = false;
+            gravediggerButton_isPressedInside = false;
         }
 
         // Update souls label every frame
@@ -283,9 +392,11 @@ int main()
         window.draw(playerNameLabel);
         window.draw(timeLabel);
         window.draw(soulsLabel);
-        window.draw(scythesLabel);
         window.draw(soulButton);
-        window.draw(scythesButton);
+        window.draw(scytheLabel);
+        window.draw(scytheButton);
+        window.draw(gravediggerLabel);
+        window.draw(gravediggerButton);
 
         // Update the window
         window.display();
