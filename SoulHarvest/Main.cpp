@@ -19,7 +19,7 @@ int main()
     const int WINDOW_HEIGHT = 1080;
 
     // Sets the font for all of the text
-    const sf::Font font("fonts/KONSTANTINE.ttf");
+    const sf::Font font("fonts/AndreaTyped-Demo.otf");
 
     // State of mouse
     bool isMousePressed = false;
@@ -35,6 +35,7 @@ int main()
 
     // Game variables
     float costIncreasePercentage = 0.15f;   // The percentage that the cost of an upgrade goes up by each time it's purchased
+    float totalSoulsPerSec = 0.0f;          // Total souls that are being made per second
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Soul Harvest");
@@ -50,12 +51,20 @@ int main()
     // Create player name text
     sf::Text playerNameLabel(font, player.data.name + "'s Soul Farm", 24);
     sf::FloatRect playerNameLb = playerNameLabel.getLocalBounds();
-    playerNameLabel.setOrigin({ playerNameLb.size.x, 0 });
-    playerNameLabel.setPosition({ WINDOW_WIDTH - 15, 15 });
+    playerNameLabel.setOrigin(playerNameLb.getCenter());
+    playerNameLabel.setPosition({ WINDOW_WIDTH / 2, 75 });
 
     // Create time text
     sf::Text timeLabel(font, "Time Played:", 24);
     timeLabel.setPosition({ 15, 15 });
+
+    // Create souls text
+    sf::Text soulsLabel(font, "Souls: " + std::to_string(round(player.data.soulsOwned)), 24);
+    soulsLabel.setPosition({ 15, 45 });
+
+    // Create souls per sec text
+    sf::Text soulsPerSecLabel(font, "SPS: " + std::to_string(totalSoulsPerSec), 24);
+    soulsPerSecLabel.setPosition({ 15, 75 });
 
 
 
@@ -70,53 +79,77 @@ int main()
     bool soulButton_isOver = false;
     bool soulButton_isPressedInside = false;
 
-    // Create souls text
-    sf::Text soulsLabel(font, "Souls: " + std::to_string(round(player.data.soulsOwned)), 24);
-    soulsLabel.setPosition({ 15, 45 });
 
 
-
-    // Create the Scythe upgrade
+    // Create the scythe upgrade
     Upgrade scythe;
     scythe.amountOwned = 0;
     scythe.cost = 15;
     scythe.soulsPerSec = 0.10f;
 
     // Create scytheButton
-    sf::RectangleShape scytheButton({ 50.0f, 20.0f });
+    sf::RectangleShape scytheButton({ 300.0f, 75.0f });
     scytheButton.setFillColor(sf::Color::Cyan);
     sf::FloatRect scytheButtonLb = scytheButton.getLocalBounds();
-    scytheButton.setPosition({ 15, 80 });
-
-    // Create scythe text
-    sf::Text scytheLabel(font, "Scythes: " + std::to_string(scythe.amountOwned) + "     Cost: " + std::to_string(scythe.cost), 24);
-    scytheLabel.setPosition({ 75, 75 });
+    scytheButton.setPosition({ WINDOW_WIDTH - 315, 15 });
+    sf::Vector2f scytheButtonPos = scytheButton.getPosition();
 
     // State of scytheButton
     bool scytheButton_isOver = false;
     bool scytheButton_isPressedInside = false;
 
+    // Create scythe text
+    sf::Text scytheLabel(font, " Scythe", 30);
+    scytheLabel.setFillColor(sf::Color::Blue);
+    scytheLabel.setPosition({ scytheButton.getPosition() });
+
+    // Create scythe cost text
+    sf::Text scytheCostLabel(font, std::to_string(scythe.cost) + " souls", 20);
+    scytheCostLabel.setFillColor(sf::Color::Blue);
+    scytheCostLabel.setPosition({ scytheButtonPos.x + 10, scytheButtonPos.y + 45 });
+
+    // Create scythe amount owned text
+    sf::Text scythesOwnedLabel(font, std::to_string(scythe.amountOwned), 64);
+    scythesOwnedLabel.setFillColor(sf::Color::Blue);
+    sf::FloatRect scythesOwnedLabelLb = scythesOwnedLabel.getLocalBounds();
+    scythesOwnedLabel.setOrigin({ scythesOwnedLabelLb.size.x, 0 });
+    scythesOwnedLabel.setPosition({ (scytheButtonPos.x + scytheButtonLb.size.x) - scythesOwnedLabelLb.size.x, 10 });
 
 
-    // Create the Gravedigger upgrade
+
+    // Create the gravedigger upgrade
     Upgrade gravedigger;
     gravedigger.amountOwned = 0;
     gravedigger.cost = 100;
     gravedigger.soulsPerSec = 1.0f;
 
     // Create gravediggerButton
-    sf::RectangleShape gravediggerButton({ 50.0f, 20.0f });
+    sf::RectangleShape gravediggerButton({ 300.0f, 75.0f });
     gravediggerButton.setFillColor(sf::Color::Cyan);
     sf::FloatRect gravediggerButtonLb = gravediggerButton.getLocalBounds();
-    gravediggerButton.setPosition({ 15, 110 });
-
-    // Create Gravedigger text
-    sf::Text gravediggerLabel(font, "Gravediggers: " + std::to_string(gravedigger.amountOwned) + "     Cost: " + std::to_string(gravedigger.cost), 24);
-    gravediggerLabel.setPosition({ 75, 105 });
+    gravediggerButton.setPosition({ WINDOW_WIDTH - 315, 105 });
+    sf::Vector2f gravediggerButtonPos = gravediggerButton.getPosition();
 
     // State of gravediggerButton
     bool gravediggerButton_isOver = false;
     bool gravediggerButton_isPressedInside = false;
+
+    // Create gravedigger text
+    sf::Text gravediggerLabel(font, " Gravedigger", 30);
+    gravediggerLabel.setFillColor(sf::Color::Blue);
+    gravediggerLabel.setPosition({ gravediggerButton.getPosition() });
+
+    // Create gravedigger cost text
+    sf::Text gravediggerCostLabel(font, std::to_string(gravedigger.cost) + " souls", 20);
+    gravediggerCostLabel.setFillColor(sf::Color::Blue);
+    gravediggerCostLabel.setPosition({ gravediggerButtonPos.x + 10, gravediggerButtonPos.y + 45 });
+
+    // Create gravedigger amount owned text
+    sf::Text gravediggersOwnedLabel(font, std::to_string(gravedigger.amountOwned), 64);
+    gravediggersOwnedLabel.setFillColor(sf::Color::Blue);
+    sf::FloatRect gravediggersOwnedLabelLb = gravediggersOwnedLabel.getLocalBounds();
+    gravediggersOwnedLabel.setOrigin({ gravediggersOwnedLabelLb.size.x, 0 });
+    gravediggersOwnedLabel.setPosition({ (gravediggerButtonPos.x + gravediggerButtonLb.size.x) - gravediggersOwnedLabelLb.size.x, 100 });
 
 
 
@@ -288,7 +321,8 @@ int main()
                     scythe.cost = std::round(scythe.cost * (1 + costIncreasePercentage));
                     scythe.addAmountOwned(1);
                     player.data.totalUpgradesOwned += 1;
-                    scytheLabel.setString("Scythe: " + std::to_string(scythe.amountOwned) + "     Cost: " + std::to_string(scythe.cost));
+                    scytheCostLabel.setString(std::to_string(scythe.cost) + " souls");
+                    scythesOwnedLabel.setString(std::to_string(scythe.amountOwned));
                 }
                 std::cout << "Release\n";
             }
@@ -349,7 +383,8 @@ int main()
                     gravedigger.cost = std::round(gravedigger.cost * (1 + costIncreasePercentage));
                     gravedigger.addAmountOwned(1);
                     player.data.totalUpgradesOwned += 1;
-                    gravediggerLabel.setString("Gravediggers: " + std::to_string(gravedigger.amountOwned) + "     Cost: " + std::to_string(gravedigger.cost));
+                    gravediggerCostLabel.setString(std::to_string(gravedigger.cost) + " souls");
+                    gravediggersOwnedLabel.setString(std::to_string(gravedigger.amountOwned));
                 }
                 std::cout << "Release\n";
             }
@@ -384,6 +419,9 @@ int main()
         // Update souls label every frame
         soulsLabel.setString("Souls: " + std::to_string(static_cast<int>(player.data.soulsOwned)));
 
+        totalSoulsPerSec = (scythe.amountOwned * scythe.soulsPerSec) + (gravedigger.amountOwned * gravedigger.soulsPerSec);
+        soulsPerSecLabel.setString("SPS: " + std::to_string(totalSoulsPerSec));
+
         // Clear screen
         window.clear(sf::Color(20, 20, 20));
 
@@ -391,12 +429,17 @@ int main()
         window.draw(title);
         window.draw(playerNameLabel);
         window.draw(timeLabel);
+        window.draw(soulsPerSecLabel);
         window.draw(soulsLabel);
         window.draw(soulButton);
-        window.draw(scytheLabel);
         window.draw(scytheButton);
-        window.draw(gravediggerLabel);
+        window.draw(scytheLabel);
+        window.draw(scytheCostLabel);
+        window.draw(scythesOwnedLabel);
         window.draw(gravediggerButton);
+        window.draw(gravediggerLabel);
+        window.draw(gravediggerCostLabel);
+        window.draw(gravediggersOwnedLabel);
 
         // Update the window
         window.display();
